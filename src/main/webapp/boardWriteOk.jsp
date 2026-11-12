@@ -8,6 +8,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>게시판</title>
+    <!-- CSS 파일 연결 -->
+    <link rel="stylesheet" href="css/board.css">
 <title>게시판 글 저장</title>
 </head>
 <body>
@@ -49,7 +52,7 @@
 			
 			if(result == 1) {
 				System.out.println("글 작성 성공!");
-				response.sendRedirect("boardList.jsp");
+				
 			} else {
 				System.out.println("글 작성 실패!");
 			}
@@ -71,9 +74,7 @@
 			}
 		}
 				
-		
-	
-		
+		response.sendRedirect("boardList.jsp");
 	%>
 </body>
 </html>

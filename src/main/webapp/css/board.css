@@ -1,0 +1,142 @@
+@charset "UTF-8";
+@charset "UTF-8";
+
+/* 전체 기본 설정 및 폰트 */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #333333;
+    margin: 0;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 페이지 제목 */
+h2 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+hr {
+    width: 100%;
+    max-width: 700px;
+    border: none;
+    border-top: 1px solid #dee2e6;
+    margin-bottom: 25px;
+}
+
+/* 테이블 스타일 (목록 페이지) */
+table {
+    width: 100%;
+    max-width: 800px;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 14px 16px;
+    text-align: center;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+th {
+    background-color: #4a90e2;
+    color: #ffffff;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+/* 제목 열은 왼쪽 정렬 */
+td:nth-child(2) {
+    text-align: left;
+}
+
+tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* 링크 스타일 */
+a {
+    text-decoration: none;
+    color: #2c3e50;
+}
+
+a:hover {
+    color: #4a90e2;
+    text-decoration: underline;
+}
+
+/* 폼 및 상세 보기 박스 스타일 */
+form, .view-container {
+    width: 100%;
+    max-width: 700px;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+}
+
+/* 상세 보기 페이지 텍스트 배치 개선 */
+p {
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 12px 0;
+}
+
+/* 입력 필드 스타일 */
+input[type="text"], textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 15px;
+    transition: border-color 0.2s;
+}
+
+input[type="text"]:focus, textarea:focus {
+    border-color: #4a90e2;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+/* 버튼 스타일 통일 */
+input[type="button"], input[type="submit"], button {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-right: 6px;
+    margin-top: 10px;
+}
+
+input[type="button"]:hover, input[type="submit"]:hover, button:hover {
+    background-color: #357abd;
+}
+
+/* 취소/삭제 등 보조 버튼 색상 */
+input[type="button"][value="취소"], 
+input[type="button"][value="글삭제"] {
+    background-color: #6c757d;
+}
+
+input[type="button"][value="취소"]:hover, 
+input[type="button"][value="글삭제"]:hover {
+    background-color: #5a6268;
+}

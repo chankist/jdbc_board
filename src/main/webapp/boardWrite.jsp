@@ -5,6 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <title>게시판 글쓰기</title>
+<!-- CSS 파일 연결 -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/board.css">
+<title>게시판 글쓰기</title>
 </head>
 <body>
 	<h2>게시판 글쓰기</h2>

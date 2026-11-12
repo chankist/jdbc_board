@@ -1,13 +1,21 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="board.boardDto"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Connection"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@taglib prefix="c" uri="jakarta.tags.core" %>
+    <%@taglib prefix="fn" uri="jakarta.tags.functions" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<title>게시판</title>
+    <!-- CSS 파일 연결 -->
+    <link rel="stylesheet" href="css/board.css">
 <title>게시판 글 목록</title>
 </head>
 <body>
@@ -15,7 +23,7 @@
 		request.setCharacterEncoding("utf-8");
 	
 		//모든글 가져오기 sql문
-		String sql = "SELECT * FROM board";
+		String sql = "SELECT * FROM board ORDER BY bnum DESC";
 		
 		//DB 커넥션 준비를 위한 4개의 변수
 		//사용하려는 DB의 드라이버이름, DB 서버의 주소(URL), 계정아이디, 계정비번
@@ -27,6 +35,7 @@
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;//DB로부터 (가져오는)반환하는 레코드(게시글)를 받는 그릇 
+		ArrayList<boardDto> boardList = new ArrayList<boardDto>();
 		
 		try {
 			Class.forName(driverName);//jdbc 드라이버 로등
@@ -38,14 +47,22 @@
 						
 			rs = pstmt.executeQuery();
 			
+			
+			
 			while(rs.next()) {
-				int bnum = rs.getInt("bunm");
+				int bnum = rs.getInt("bnum");
 				String btitle = rs.getString("btitle");
 				String bcontent = rs.getString("bcontent");
-				String bwriter= rs.getString("bwriter");
+				String bwriter = rs.getString("bwriter");
 				int bhit = rs.getInt("bhit");
 				String bdate = rs.getString("bdate");
+				
+				boardDto bDto = new boardDto(bnum, btitle, bcontent, bwriter, bhit, bdate);
+				
+				boardList.add(bDto);
 			}
+			
+			request.setAttribute("boardList", boardList);
 				
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -63,31 +80,43 @@
 			}
 		}
 	%>
-
-	<h1>게시판 글 목록</h1>
-	<hr>
-	<table>
+	
+	<table border="1">
 		<thead>
 			<tr>
-				<th>글번호</th>
-				<th>글제목</th>
-				<th>글내용</th>
+				<th>번호</th>
+				<th>제목</th>
 				<th>작성자</th>
 				<th>조회수</th>
 				<th>작성일</th>
-			</tr>
-		</thead>
-		
-		<tbody>
 			<tr>
-				<th></th>
-				<th></th>
-				<th></th>
-				<th></th>
-				<th></th>
-				<th></th>
-			</tr>
+		</thead>
+		<tbody>
+			<c:forEach var="bDto" items="${boardList}">
+				<tr>
+					<td>${bDto.bnum}</td>
+					<td>
+						<a href="boardView.jsp?bnum=${bDto.bnum}">
+							<c:choose>
+								<c:when test="${fn:length(bDto.btitle)>20}">
+									${fn:substring(bDto.btitle,0,20)}...
+								</c:when>
+								<c:otherwise>
+									${bDto.btitle}
+								</c:otherwise>
+							</c:choose>
+						</a>
+					</td>
+					<td>${bDto.bwriter}</td>
+					<td>${bDto.bhit}</td>
+					<td>
+						${fn:substring(bDto.bdate,0,10)}
+					</td>
+				</tr>
+			</c:forEach>
 		</tbody>
 	</table>
+	<input type="button" value="글쓰기" onclick="location.href='boardWrite.jsp'">
+			
 </body>
 </html>
