@@ -1,6 +1,6 @@
+<%@page import="com.mysql.cj.x.protobuf.MysqlxConnection.Close"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.Connection"%>
-<%@page import="java.net.ConnectException"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -13,16 +13,16 @@
 <body>
 	<%
 		request.setCharacterEncoding("utf-8");
-	
+		
+		//사용자가 입력한 내용 저장
 		String btitle = request.getParameter("btitle");
 		String bcontent = request.getParameter("bcontent");
 		String bwriter = request.getParameter("bwriter");
 		
-		String sql = "INSERT INTO board(btitle, bcontent, bwriter, bhit) VALUES(?,?,?)";
+		String sql = "INSERT INTO board(btitle, bcontent, bwriter, bhit) VALUES(?,?,?,0)";
 		
 		//DB 커넥션 준비를 위한 4개의 변수
 		//사용하려는 DB의 드라이버이름, DB 서버의 주소(URL), 계정아이디, 계정비번
-		
 		String driverName = "com.mysql.jdbc.Driver";
 		String url = "jdbc:mysql://localhost:3306/boardtest";//DB이름(스키마 이름)
 		String username = "root";
@@ -31,13 +31,48 @@
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
-		conn = DriverManager.getConnection(url, username, password);
+		try {
+			Class.forName(driverName);//jdbc 드라이버 로등
+			conn = DriverManager.getConnection(url, username, password);
+			//DB와 jsp 서버간의 connection(연결통로)가 생성
+			
+			//만들어진 커넥션을 통해서 sql문을 실행시키기 위한 단계
+			pstmt = conn.prepareStatement(sql);
+			 
+			//sql문의 ? 값 채우기
+			pstmt.setString(1, btitle);
+			pstmt.setString(2, bcontent);
+			pstmt.setString(3, bwriter);
+			
+			int result = pstmt.executeUpdate();//sql문 실행
+			//새로운 글작성 sql문이 실행 성공하면 정수 1의 반환
+			
+			if(result == 1) {
+				System.out.println("글 작성 성공!");
+				response.sendRedirect("boardList.jsp");
+			} else {
+				System.out.println("글 작성 실패!");
+			}
+			
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				} if(conn != null) {
+					conn.close();
+				}
+				
+			} catch(Exception e) {
+				
+			}
+		}
+				
 		
-		pstmt = conn.prepareStatement(sql);
-		
-		pstmt.setString(1, btitle);
-		pstmt.setString(2, bcontent);
-		pstmt.setString(3, bwriter);
+	
 		
 	%>
 </body>
